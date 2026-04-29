@@ -1,0 +1,607 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-04-29T13:21:24Z",
+  "skill_count": 18,
+  "skills": [
+    {
+      "id": "champion-tracking",
+      "name": "Champion Tracking",
+      "description": "Given an account, finds UserGems champion-moved data and Pulse contacts.",
+      "kit": "csm",
+      "audience": [
+        "csm",
+        "flm"
+      ],
+      "workflow": [],
+      "tools": [
+        "query_salesforce",
+        "query_bigquery",
+        "fetch_usergems_moves"
+      ],
+      "tags": [
+        "audience:csm",
+        "audience:flm",
+        "freq:daily",
+        "freq:quarterly",
+        "kit:csm",
+        "source:pendo-curated",
+        "tool:fetch_usergems_moves",
+        "tool:query_bigquery",
+        "tool:query_salesforce"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "churn-risk-investigation",
+      "name": "Churn Risk Investigation",
+      "description": "Uses RetOs signals, Pulse health, and product usage drop to assess account churn risk.",
+      "kit": "csm",
+      "audience": [
+        "csm",
+        "flm"
+      ],
+      "workflow": [],
+      "tools": [
+        "fetch_retos_churn_risk",
+        "query_salesforce",
+        "query_bigquery",
+        "list_gong_calls"
+      ],
+      "tags": [
+        "audience:csm",
+        "audience:flm",
+        "freq:daily",
+        "freq:quarterly",
+        "kit:csm",
+        "source:pendo-curated",
+        "tool:fetch_retos_churn_risk",
+        "tool:list_gong_calls",
+        "tool:query_bigquery",
+        "tool:query_salesforce"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "qbr-prep",
+      "name": "QBR Prep",
+      "description": "Prepares a QBR deck outline from Pendo product usage and SFDC touchpoints.",
+      "kit": "csm",
+      "audience": [
+        "csm",
+        "flm"
+      ],
+      "workflow": [
+        "prep"
+      ],
+      "tools": [
+        "query_bigquery",
+        "query_salesforce",
+        "list_gong_calls",
+        "fetch_retos_churn_risk",
+        "generate_slides_outline"
+      ],
+      "tags": [
+        "audience:csm",
+        "audience:flm",
+        "freq:daily",
+        "freq:quarterly",
+        "kit:csm",
+        "source:pendo-curated",
+        "tool:fetch_retos_churn_risk",
+        "tool:generate_slides_outline",
+        "tool:list_gong_calls",
+        "tool:query_bigquery",
+        "tool:query_salesforce",
+        "workflow:prep"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "bq-query-governed",
+      "name": "BQ Query (Governed)",
+      "description": "Translates natural language into governed BigQuery SQL against pendolytics schemas and runs with RLS.",
+      "kit": "engineering",
+      "audience": [
+        "engineering"
+      ],
+      "workflow": [],
+      "tools": [
+        "query_bigquery",
+        "fetch_bq_schema",
+        "explain_sql"
+      ],
+      "tags": [
+        "audience:engineering",
+        "freq:daily",
+        "kit:engineering",
+        "source:pendo-curated",
+        "tool:explain_sql",
+        "tool:fetch_bq_schema",
+        "tool:query_bigquery"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "cloud-run-deploy-check",
+      "name": "Cloud Run Deploy Check",
+      "description": "Reviews a Cloud Run service \u2014 image, revision, traffic, IAM \u2014 pre or post deploy.",
+      "kit": "engineering",
+      "audience": [
+        "engineering"
+      ],
+      "workflow": [],
+      "tools": [
+        "gcloud_run_describe",
+        "gcloud_run_revisions_list",
+        "gcloud_iam_policy_get",
+        "fetch_cloud_run_logs"
+      ],
+      "tags": [
+        "audience:engineering",
+        "kit:engineering",
+        "source:pendo-curated",
+        "tool:fetch_cloud_run_logs",
+        "tool:gcloud_iam_policy_get",
+        "tool:gcloud_run_describe",
+        "tool:gcloud_run_revisions_list"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "saver-validation-check",
+      "name": "SAVER Validation Check",
+      "description": "Hits the SAVER API and explains which SFDC validation rules would block a proposed write.",
+      "kit": "engineering",
+      "audience": [
+        "engineering"
+      ],
+      "workflow": [
+        "drafting"
+      ],
+      "tools": [
+        "fetch_saver_rules",
+        "query_salesforce"
+      ],
+      "tags": [
+        "audience:engineering",
+        "kit:engineering",
+        "source:pendo-curated",
+        "tool:fetch_saver_rules",
+        "tool:query_salesforce",
+        "workflow:drafting"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "jira-ticket-triage",
+      "name": "Jira Ticket Triage",
+      "description": "Summarizes a Jira ticket and suggests the next action based on status, comments, and linked PRs.",
+      "kit": "essentials",
+      "audience": [
+        "ae",
+        "csm",
+        "flm",
+        "engineering",
+        "finance",
+        "ops"
+      ],
+      "workflow": [],
+      "tools": [
+        "fetch_jira_issue",
+        "search_slack",
+        "fetch_github_pr"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:csm",
+        "audience:engineering",
+        "audience:finance",
+        "audience:flm",
+        "audience:ops",
+        "kit:essentials",
+        "source:pendo-curated",
+        "tool:fetch_github_pr",
+        "tool:fetch_jira_issue",
+        "tool:search_slack"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "summarize-slack-thread",
+      "name": "Summarize Slack Thread",
+      "description": "Fetches a Slack thread from a link and returns a crisp summary with decisions and open questions.",
+      "kit": "essentials",
+      "audience": [
+        "ae",
+        "csm",
+        "flm",
+        "engineering",
+        "finance",
+        "ops"
+      ],
+      "workflow": [
+        "reporting"
+      ],
+      "tools": [
+        "search_slack",
+        "fetch_slack_thread"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:csm",
+        "audience:engineering",
+        "audience:finance",
+        "audience:flm",
+        "audience:ops",
+        "kit:essentials",
+        "source:pendo-curated",
+        "tool:fetch_slack_thread",
+        "tool:search_slack",
+        "workflow:reporting"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "weekly-digest",
+      "name": "Weekly Digest",
+      "description": "Scans Slack, Calendar, Jira, and Linear for the past week and produces a personal digest.",
+      "kit": "essentials",
+      "audience": [
+        "ae",
+        "csm",
+        "flm",
+        "engineering",
+        "finance",
+        "ops"
+      ],
+      "workflow": [
+        "reporting"
+      ],
+      "tools": [
+        "search_slack",
+        "fetch_calendar_events",
+        "fetch_jira_issues",
+        "fetch_linear_issues",
+        "fetch_iaf_metrics"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:csm",
+        "audience:engineering",
+        "audience:finance",
+        "audience:flm",
+        "audience:ops",
+        "freq:weekly",
+        "kit:essentials",
+        "source:pendo-curated",
+        "tool:fetch_calendar_events",
+        "tool:fetch_iaf_metrics",
+        "tool:fetch_jira_issues",
+        "tool:fetch_linear_issues",
+        "tool:search_slack",
+        "workflow:reporting"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "welcome-tour",
+      "name": "Welcome Tour",
+      "description": "Introduces REX to a new Pendo employee and suggests 3 starter skills based on role.",
+      "kit": "essentials",
+      "audience": [
+        "ae",
+        "csm",
+        "flm",
+        "engineering",
+        "finance",
+        "ops"
+      ],
+      "workflow": [],
+      "tools": [
+        "query_bigquery",
+        "fetch_iaf_metrics"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:csm",
+        "audience:engineering",
+        "audience:finance",
+        "audience:flm",
+        "audience:ops",
+        "freq:quarterly",
+        "freq:weekly",
+        "kit:essentials",
+        "source:pendo-curated",
+        "tool:fetch_iaf_metrics",
+        "tool:query_bigquery"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "forecast-variance-explanation",
+      "name": "Forecast Variance Explanation",
+      "description": "Explains why the current-quarter forecast moved \u2014 new wins, slipped deals, churn.",
+      "kit": "finance",
+      "audience": [
+        "finance",
+        "ops"
+      ],
+      "workflow": [],
+      "tools": [
+        "query_salesforce",
+        "query_bigquery",
+        "fetch_retos_churn_risk"
+      ],
+      "tags": [
+        "audience:finance",
+        "audience:ops",
+        "freq:weekly",
+        "kit:finance",
+        "source:pendo-curated",
+        "tool:fetch_retos_churn_risk",
+        "tool:query_bigquery",
+        "tool:query_salesforce"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "ramp-expense-triage",
+      "name": "Ramp Expense Triage",
+      "description": "Triages unmatched Ramp expenses against the expected vendor list.",
+      "kit": "finance",
+      "audience": [
+        "finance",
+        "ops"
+      ],
+      "workflow": [],
+      "tools": [
+        "fetch_ramp_transactions",
+        "query_bigquery",
+        "fetch_netsuite_vendors",
+        "draft_email"
+      ],
+      "tags": [
+        "audience:finance",
+        "audience:ops",
+        "freq:weekly",
+        "kit:finance",
+        "source:pendo-curated",
+        "tool:draft_email",
+        "tool:fetch_netsuite_vendors",
+        "tool:fetch_ramp_transactions",
+        "tool:query_bigquery"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "flm-coaching-prep",
+      "name": "FLM Coaching Prep",
+      "description": "Aggregates a rep's Gong calls, pipeline, and signals for 1:1 prep.",
+      "kit": "flm",
+      "audience": [
+        "flm"
+      ],
+      "workflow": [
+        "prep"
+      ],
+      "tools": [
+        "list_gong_calls",
+        "query_salesforce",
+        "fetch_revos_signals",
+        "query_bigquery"
+      ],
+      "tags": [
+        "audience:flm",
+        "kit:flm",
+        "source:pendo-curated",
+        "tool:fetch_revos_signals",
+        "tool:list_gong_calls",
+        "tool:query_bigquery",
+        "tool:query_salesforce",
+        "workflow:prep"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "team-pipeline-rollup",
+      "name": "Team Pipeline Rollup",
+      "description": "Rolls up a team's pipeline with rep-by-rep signal counts.",
+      "kit": "flm",
+      "audience": [
+        "flm"
+      ],
+      "workflow": [],
+      "tools": [
+        "query_salesforce",
+        "fetch_revos_signals",
+        "query_bigquery"
+      ],
+      "tags": [
+        "audience:flm",
+        "freq:quarterly",
+        "freq:weekly",
+        "kit:flm",
+        "source:pendo-curated",
+        "tool:fetch_revos_signals",
+        "tool:query_bigquery",
+        "tool:query_salesforce"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "account-signal-investigation",
+      "name": "Account Signal Investigation",
+      "description": "Given a SFDC account, pulls RevOS signals, LIM events, and Gong mentions, then drafts outreach.",
+      "kit": "sales",
+      "audience": [
+        "ae",
+        "flm"
+      ],
+      "workflow": [
+        "drafting"
+      ],
+      "tools": [
+        "query_salesforce",
+        "fetch_revos_signals",
+        "query_bigquery",
+        "list_gong_calls",
+        "draft_email"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:flm",
+        "freq:weekly",
+        "kit:sales",
+        "source:pendo-curated",
+        "tool:draft_email",
+        "tool:fetch_revos_signals",
+        "tool:list_gong_calls",
+        "tool:query_bigquery",
+        "tool:query_salesforce",
+        "workflow:drafting"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "analyze-gong-call",
+      "name": "Analyze Gong Call",
+      "description": "Pulls a Gong call transcript and extracts competitor mentions, objections, and next steps.",
+      "kit": "sales",
+      "audience": [
+        "ae",
+        "flm"
+      ],
+      "workflow": [],
+      "tools": [
+        "fetch_gong_call",
+        "list_gong_calls",
+        "query_salesforce"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:flm",
+        "freq:weekly",
+        "kit:sales",
+        "source:pendo-curated",
+        "tool:fetch_gong_call",
+        "tool:list_gong_calls",
+        "tool:query_salesforce"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "draft-follow-up-email",
+      "name": "Draft Follow-up Email",
+      "description": "After a call or meeting, drafts a personalized follow-up using Gong and SFDC context.",
+      "kit": "sales",
+      "audience": [
+        "ae",
+        "flm"
+      ],
+      "workflow": [],
+      "tools": [
+        "fetch_gong_call",
+        "query_salesforce",
+        "fetch_calendar_events",
+        "draft_email"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:flm",
+        "freq:weekly",
+        "kit:sales",
+        "source:pendo-curated",
+        "tool:draft_email",
+        "tool:fetch_calendar_events",
+        "tool:fetch_gong_call",
+        "tool:query_salesforce"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    },
+    {
+      "id": "pipeline-pulse",
+      "name": "Pipeline Pulse",
+      "description": "Generates a daily pipeline health digest for a rep or team.",
+      "kit": "sales",
+      "audience": [
+        "ae",
+        "flm"
+      ],
+      "workflow": [
+        "reporting"
+      ],
+      "tools": [
+        "query_salesforce",
+        "fetch_revos_signals",
+        "query_bigquery"
+      ],
+      "tags": [
+        "audience:ae",
+        "audience:flm",
+        "freq:daily",
+        "freq:weekly",
+        "kit:sales",
+        "source:pendo-curated",
+        "tool:fetch_revos_signals",
+        "tool:query_bigquery",
+        "tool:query_salesforce",
+        "workflow:reporting"
+      ],
+      "source_kind": "pendo-curated",
+      "author": "pendo-iaf",
+      "version": "1.0.0",
+      "created": "2026-04-17"
+    }
+  ]
+}
