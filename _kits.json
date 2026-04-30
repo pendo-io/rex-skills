@@ -4,7 +4,7 @@
     "name": "Essentials",
     "icon": "📚",
     "color": "#E8F1FA",
-    "description": "Starter skills every REX user should install on day one."
+    "description": "Starter skills every Glass user should install on day one."
   },
   {
     "id": "sales",
@@ -21,11 +21,11 @@
     "description": "Churn risk, QBR prep, and champion tracking for CSMs."
   },
   {
-    "id": "engineering",
-    "name": "Engineering",
+    "id": "swe",
+    "name": "Software Engineering",
     "icon": "🛠️",
     "color": "#F0E8FF",
-    "description": "SAVER, governed BigQuery, and Cloud Run tooling for IAF engineers."
+    "description": "Coding, debugging, code review, and developer workflow skills."
   },
   {
     "id": "flm",
@@ -40,26 +40,5 @@
     "icon": "📊",
     "color": "#E8F0FF",
     "description": "Expense triage and forecast variance explanations for FP&A."
-  },
-  {
-    "id": "dev",
-    "name": "Developer",
-    "icon": "⚙️",
-    "color": "#EDEDF5",
-    "description": "IAF platform meta-skills — scaffolding services, running agent evals, harness setup."
-  },
-  {
-    "id": "frontend",
-    "name": "Frontend",
-    "icon": "🎨",
-    "color": "#FFE8F4",
-    "description": "Glass shell components, Tailwind v4, Pendo brand styling, tab scaffolds."
-  },
-  {
-    "id": "decks",
-    "name": "Decks",
-    "icon": "🖼️",
-    "color": "#FFF7E0",
-    "description": "Slides, canvases, QBRs, customer recaps, and other shareable artifacts."
   }
 ]

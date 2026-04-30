@@ -1,26 +1,30 @@
 ---
-id: skill-id-here
-name: Skill Name Here
-description: One-line description of what this skill does.
+name: skill-id-here
+description: >
+  One-paragraph description. Used by both Sensei (recommendation) and the agent
+  (when to invoke). Include trigger phrases like "use when ...".
 kit: essentials
+audience: []
+workflow: []
 tools: []
-author: your-name
+tags: []
+source_kind: pendo-curated
+author: your-handle
 version: 1.0.0
-created: 2026-04-22
+created: 2026-04-30
 ---
 
 # Skill Name Here
 
-## When to use
-Describe the trigger — when should someone reach for this skill?
+Open with one or two sentences on the outcome.
 
-## What it does
-2-3 sentences on the outcome.
+## When to use
+Trigger conditions — what situation, what user request, what state of the world.
 
 ## Inputs
 - input_name: description (required/optional)
 
-## Instructions (given to the agent)
+## Instructions
 
 1. Step one.
 2. Step two.
@@ -29,7 +33,7 @@ Describe the trigger — when should someone reach for this skill?
 ## Example
 
 User: "example prompt"
-Rex: (what the agent does)
+Agent: (what the agent does)
 
 ## Output format
 Describe the structure of the output.
