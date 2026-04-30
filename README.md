@@ -2,12 +2,20 @@
 
 Curated skill library for **Glass / Project Rex** — Pendo's internal AI productivity suite.
 
-Skills follow the **Anthropic Agent Skills format**: each skill is a folder with a `SKILL.md` inside. Sensei ingests them via the GitHub API.
+Skills follow the **Anthropic Agent Skills format** ([skill-creator spec](https://github.com/anthropics/skills/tree/main/skill-creator)): each skill is a folder with `SKILL.md` inside. Sensei ingests them via the GitHub API.
 
 ```
-<kit>/<skill-id>/SKILL.md     # required
-<kit>/<skill-id>/<other>      # optional resources, examples, helper scripts
+<kit>/<skill-id>/
+├── SKILL.md          # required: name + description frontmatter, markdown body
+├── scripts/          # optional: executable code for deterministic / repetitive work
+├── references/       # optional: docs loaded into context as needed
+└── assets/           # optional: templates, fonts, icons used in output
 ```
+
+Pendo wraps Anthropic's skill folder with a `<kit>/` parent for grouping and a few extra
+frontmatter fields Sensei uses for ranking. Anthropic clients ignore unknown frontmatter,
+so skills here remain drop-in compatible with Claude Code, Claude Agent SDK, and any
+other Agent Skills host.
 
 ## Layout
 
@@ -26,8 +34,13 @@ Skills follow the **Anthropic Agent Skills format**: each skill is a folder with
 ## Skill format
 
 `SKILL.md` is markdown with YAML frontmatter. `name` and `description` are
-required (Anthropic spec). The rest are Pendo-specific extensions Sensei
-uses for ranking, filtering, and discovery surfaces.
+required (Anthropic spec). The rest are Pendo extensions Sensei uses for
+ranking, filtering, and discovery surfaces.
+
+The `description` is the primary triggering mechanism — write it pushy. Include
+explicit phrases the user might say (e.g. "Use when user says X, mentions Y"),
+not just what the skill does. Skills under-trigger more often than they
+over-trigger.
 
 ```yaml
 ---
