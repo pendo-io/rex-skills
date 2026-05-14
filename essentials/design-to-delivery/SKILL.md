@@ -1,11 +1,12 @@
 ---
 name: design-to-delivery
 description: >
-  Turns Granola meeting transcripts from Glass/Rex design calls into Jira tickets,
-  then spins up coding agents to execute the work and open PRs for human review.
-  Use when user says "design to delivery", "transcript to tickets", "turn this call
-  into work", "process this design call", "kick off work from this meeting", or wants
-  to convert a design discussion into executable engineering work.
+  Turns Glass/Rex design context — from Granola transcripts, Google Docs, Slides,
+  Sheets, or a live grilling session — into Jira tickets, then spins up coding agents
+  to execute the work and open PRs for human review. Use when user says "design to
+  delivery", "transcript to tickets", "turn this call into work", "process this design
+  call", "kick off work from this meeting", or wants to convert a design discussion
+  into executable engineering work.
 kit: essentials
 audience: [swe, ops, exec]
 workflow: [prep, automation]
@@ -13,33 +14,48 @@ tools: [query_granola_meetings, get_meeting_transcript, createJiraIssue, editJir
 tags: [design, delivery, jira, agents, transcripts, automation]
 source_kind: pendo-curated
 author: jonathan.rice
-version: 1.0.0
+version: 1.1.0
 created: 2026-05-13
 ---
 
 # Design to Delivery
 
-Turn a Glass/Rex design call into shipped code: fetch the transcript, extract discrete
-work items, create Jira tickets, execute coding agents, and open PRs — with a human
-review gate before any code is written.
+Turn Glass/Rex design context into shipped code: gather the input, extract discrete work
+items, create Jira tickets, execute coding agents, and open PRs — with a human review gate
+before any code is written.
 
 See [AGENT_PROMPT.md](AGENT_PROMPT.md) for the coding agent briefing template.
 
 ## Workflow
 
-### Step 1 — Identify the meeting(s)
+### Step 1 — Gather context
 
-Ask the user which meeting(s) to process. Accept a name, keyword, or "my last design call."
-Use `query_granola_meetings` to search, then `get_meeting_transcript` to fetch the full
-transcript. If multiple meetings match, show a list and let the user pick.
+Ask the user where the design context lives. Accept any combination of:
+
+| Source | How to ingest |
+|---|---|
+| Granola recording | `query_granola_meetings` → `get_meeting_transcript` |
+| Google Doc | Fetch the doc URL the user provides; read its contents |
+| Google Slides | Fetch the deck URL; read slide text and speaker notes |
+| Google Sheet | Fetch the sheet URL; read relevant tabs |
+| Multiple sources | Combine all into a unified context before extracting tickets |
+| Nothing yet | Default to the **grill-me** skill (see below) |
+
+**If no context exists:** invoke the `grill-me` skill to interview the user about what
+they want to build. Use the output of that session as the design context for Step 2.
+Frame the grilling around: what problem is being solved, who it's for, what the
+experience should feel like, and what constraints exist.
+
+If multiple Granola meetings match a keyword, show a list and let the user pick.
 
 ### Step 2 — Extract proposed tickets
 
-Analyze the transcript and extract discrete, independently-executable work items. For each:
+Analyze the gathered context and extract discrete, independently-executable work items.
+For each:
 - **Title**: short imperative phrase
-- **Description**: what needs to be built and why, grounded in the transcript
+- **Description**: what needs to be built and why, grounded in the source material
 - **Acceptance criteria**: concrete, testable conditions for done
-- **Transcript excerpt**: the 2–4 lines from the call that motivate this ticket
+- **Source excerpt**: the 2–4 lines from the source material that motivate this ticket
 - **Dependencies**: any other tickets that must complete first
 - **Suggested repo**: where the code likely lives (e.g. `rex-skills`, `project-rex`)
 
@@ -62,7 +78,7 @@ edit tickets inline, remove tickets, or adjust dependencies.
 
 For each approved ticket, create via `createJiraIssue`:
 - Leave assignee blank initially
-- Include description, acceptance criteria, and transcript excerpt
+- Include description, acceptance criteria, and source excerpt
 - Link dependent tickets via `createIssueLink`
 
 ### Step 6 — Execute coding agents
@@ -72,7 +88,7 @@ for their dependencies to have open PRs before spawning. **Prioritize correctnes
 
 For each ticket, spawn an Agent with `isolation: "worktree"` and pass:
 - Full ticket description and acceptance criteria
-- Transcript excerpt that motivated the work
+- Source excerpt that motivated the work (transcript lines, doc paragraph, slide text, or grill-me output)
 - Links and output context from any dependency tickets
 - Pointers to the most relevant existing code in the repo (search before spawning)
 - Instructions to run all available checks (tests, lint, build) before opening a PR
