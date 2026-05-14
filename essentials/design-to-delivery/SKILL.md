@@ -2,12 +2,13 @@
 name: design-to-delivery
 description: >
   End-to-end workflow that takes Glass/Rex AI experience design context — from Granola
-  transcripts, Google Docs, Slides, Sheets, or a live grilling session — and delivers
-  filled scoping checklists, a BQ event table, a monitoring dashboard scaffold, Pendo
-  tracking guidance, calendar invites, Jira tickets, and coding agents that open PRs
-  for human review. Use when user says "design to delivery", "transcript to tickets",
-  "turn this call into work", "process this design call", "kick off work from this
-  meeting", or wants to convert a design discussion into executable engineering work.
+  transcripts, Google Docs, Slides, Sheets, or a live structured interview — and delivers
+  a Pendo-branded scoping checklist (.docx), a BQ event table, a monitoring dashboard
+  scaffold, Pendo tracking guidance, calendar invites, Jira tickets, and coding agents
+  that open PRs for human review. Use when user says "design to delivery", "transcript
+  to tickets", "turn this call into work", "process this design call", "kick off work
+  from this meeting", or wants to convert a design discussion into executable engineering
+  work.
 ---
 
 # Design to Delivery
@@ -16,8 +17,9 @@ Five-phase workflow: gather context → fill scoping checklists → set up data 
 → create Jira tickets → execute coding agents. Every phase ends with a human approval
 gate before the next begins. Agents open PRs but never merge.
 
-See [CHECKLIST_FIELDS.md](CHECKLIST_FIELDS.md) for the full pre- and post-launch field
-definitions. See [AGENT_PROMPT.md](AGENT_PROMPT.md) for the coding agent briefing template.
+See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) for the full section-by-section interview
+questions. See [CHECKLIST_FIELDS.md](CHECKLIST_FIELDS.md) for field definitions.
+See [AGENT_PROMPT.md](AGENT_PROMPT.md) for the coding agent briefing template.
 
 ---
 
@@ -30,39 +32,72 @@ Ask the user where the design context lives. Accept any combination:
 | Granola recording | `query_granola_meetings` → `get_meeting_transcript` |
 | Google Doc / Slides / Sheet | Fetch the URL the user provides; read contents via Drive MCP |
 | Multiple sources | Combine into a unified context before proceeding |
-| Nothing yet | See below |
+| Nothing yet | Run the structured interview (see below) |
 
-**If no context exists:** reference the scoping checklist framework (see
-[CHECKLIST_FIELDS.md](CHECKLIST_FIELDS.md)) and invoke `grill-me` to interview the user.
-Frame the grilling around the 11 pre-launch fields: JTBD, trigger, experience type, data
-sources, output, actions, suppression logic, success metric, build vs buy, experience
-evaluation, and ongoing monitoring. Use the grill-me output as the design context.
+**If no context exists — run the structured interview:**
 
-**Approval gate:** summarise the gathered context in 3–5 bullets and ask the user to
-confirm before proceeding.
+Start with:
+> "Let's scope this out properly. I'll walk you through the Module Definition Framework
+> section by section — it usually takes 5–10 minutes per module and ensures the build
+> is focused and measurable.
+>
+> First: **what's the name of this project**, and give me a one-sentence description of
+> what it's supposed to do?"
+
+Then ask: how many **modules** does it have? (A module = a distinct trigger/workflow
+unit. If unsure, assume 1 and adjust.)
+
+For **each module**, work through all 9 sections one at a time using [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md).
+Be conversational — acknowledge what the user says, synthesize and confirm before moving
+on, suggest reasonable defaults where the user is unsure, and mark anything uncertain as
+TBD rather than getting stuck. Complete all 9 sections for one module before starting the next.
+
+**Approval gate:** summarise the gathered context in 3–5 bullets per module and ask the
+user to confirm before proceeding to Phase 2.
 
 ---
 
-## Phase 2 — Fill Scoping Checklists
+## Phase 2 — Generate Scoping Document
 
-**2a. Create a named project doc**
+**2a. Generate the Pendo-branded .docx**
 
-Copy the scoping checklist template (Google Doc ID:
-`1N2XsrW6EifvxBs_bDVoGCiVZR_9jDrrctzhSdijZxDw`) using `copy_file`. Name it:
-`[Project Name] — AI Experience Scoping Checklist`. Share the link with the user.
+Using the data gathered in Phase 1, generate a scoping document using the
+`scripts/generate_scoping_doc.py` generator:
 
-**2b. Fill the pre-launch checklist** (11 fields — see [CHECKLIST_FIELDS.md](CHECKLIST_FIELDS.md))
+1. Download the canonical template from Google Drive:
+   - File ID: `1wPQ3GgFYdB4AWdhxrJG4dfC304CiJV3qtFHtJpLb3Ik`
+   - Export as `.docx` via the Drive MCP `download_file_content` tool
+2. Call `generate_scoping_doc()` with the filled module data and optional CC/CD framework
+   (see [scripts/generate_scoping_doc.py](scripts/generate_scoping_doc.py) for the full
+   interface and Pendo Pink brand styling rules)
+3. Output to `/mnt/user-data/outputs/[ProjectName]_Scoping_Checklist.docx`
+4. Present the file to the user for download
 
-Work through each field using the gathered context. Where the context doesn't answer a
-field, ask the user directly. Fill answers into the copied doc via the Drive MCP.
+**Brand styling (mandatory):**
+- Document title → Pendo Pink (`#FF4081`)
+- All bordered table header rows → `#FF4081` fill, white bold text
+- All other styles inherit from the template (Arial, Heading 1/2/3)
 
-**2c. Fill the post-launch checklist** (CC/CD framework)
+**2b. Fill the post-launch CC/CD framework**
 
-Define the Surface → Engage → Resolve metrics, calibration loop plan, feedback
-mechanisms (thumbs up/down + free-form), business KPI, and UX KPI. Fill into the doc.
+After the pre-launch sections, ask if the user also wants to fill in the CC/CD framework:
+- V1/V2/V3 calibration phases (control level, agency level, status)
+- Surface → Engage → Resolve evaluation plan
+- Business KPI + UX KPI per module
+- Primary owner, co-owner, runbook location
 
-**Approval gate:** show the user a summary of all filled fields and ask for confirmation
-before proceeding. They can edit anything in the doc directly.
+If yes, include it in the generated doc.
+
+**2c. Upload to Drive (with confirmation)**
+
+Ask the user for explicit confirmation before uploading:
+> "Want me to upload this to the scoping checklist folder in Drive?"
+
+Drive folder ID: `1Gh2I3RqvtMmUda0IrKLql6itrD4ixXnI`
+
+Only upload on explicit "yes." Report the file ID or web link after upload.
+
+**Approval gate:** confirm the user is happy with the doc before proceeding to Phase 3.
 
 ---
 
@@ -72,45 +107,39 @@ Run all four sub-steps, then present a combined summary for approval.
 
 **3a. BQ event table**
 
-Ask the user: which GCP project and dataset should the event table live in?
-A coding agent will generate and apply the `CREATE TABLE` DDL based on the experience
-type and output fields defined in Phase 2. The table should follow the pattern of
-`gtm_engineering.sales_hygiene_event_log` — event log with timestamp, user, action,
-result, and experience-specific fields.
+Ask: which GCP project and dataset should the event table live in?
+A coding agent generates and applies the `CREATE TABLE` DDL based on the experience type
+and output fields from Phase 1. Follow the pattern of `gtm_engineering.sales_hygiene_event_log`
+— event log with timestamp, user, action, result, and experience-specific fields.
 
 **3b. Monitoring dashboard**
 
-Ask the user: is there an existing dashboard template or repo to start from?
-- If yes: provide the URL/repo and a coding agent will clone and adapt it.
-- If no: a coding agent will scaffold a basic dashboard reading from the BQ event table
-  and mark it with a TODO for the user to build out to completion.
-
-Reference the IAF HQ dashboard (`https://iaf-hq-94438242953.us-east1.run.app/shb/roadmap`)
-as the design target for structure and layout.
+Ask: is there an existing dashboard template or repo to start from?
+- If yes: a coding agent clones and adapts it.
+- If no: a coding agent scaffolds a basic dashboard reading from the BQ event table,
+  marked TODO for build-out. Reference the IAF HQ dashboard for structure.
 
 **3c. Pendo tracking**
 
-Based on the experience type from Phase 2:
-- **P4E** — for employee-facing applications (surfaces UI in Glass or internal tools)
-- **Agent Analytics** — for AI agents only (no direct UI surface)
+Based on experience type from Phase 1:
+- **P4E** — employee-facing applications (surfaces UI in Glass or internal tools)
+- **Agent Analytics** — AI agents only (no direct UI surface)
 
-Identify the specific events to track and document them in the scoping checklist doc.
+Identify specific events to track and document them in the scoping doc.
 
 **3d. Calendar invites**
 
-Create two calendar events for the user (add user as sole attendee; prompt them to add
-others before the meetings):
+Create two calendar events (user as sole attendee — prompt them to add others):
 
 | Meeting | Timing | Purpose |
 |---|---|---|
-| Code Review | 2 business days after today | Review PRs opened by coding agents |
-| Team Review | 2 business days after Code Review | Review output with the broader team |
+| Code Review | 2 business days from today | Review PRs opened by coding agents |
+| Team Review | 2 business days after Code Review | Review output with broader team |
 
-Use `create_event` with the project name in the title. Include the Jira project link and
-GitHub repo in the description once known.
+Include project name, Jira project link, and GitHub repo in the invite descriptions.
 
-**Approval gate:** present the BQ table schema, dashboard plan, Pendo tracking events,
-and calendar invite details. Get explicit approval before any of this is created.
+**Approval gate:** present BQ schema, dashboard plan, Pendo tracking events, and
+calendar invite details. Get explicit approval before creating anything.
 
 ---
 
@@ -118,26 +147,26 @@ and calendar invite details. Get explicit approval before any of this is created
 
 Ask which Jira project to use (offer to list via `getVisibleJiraProjects`).
 
-Extract discrete, independently-executable work items from the Phase 2 context. For each:
+Extract discrete, independently-executable work items from the Phase 1 context.
+For each ticket:
 - **Title**: short imperative phrase
 - **Description**: what to build and why, grounded in the source material
 - **Acceptance criteria**: concrete, testable conditions for done
-- **Source excerpt**: 2–4 lines from the source material that motivate this ticket
+- **Source excerpt**: 2–4 lines from source material that motivate this ticket
 - **Dependencies**: any tickets that must complete first
 - **Suggested repo**: where the code likely lives (e.g. `rex-skills`, `project-rex`)
 
-Present the full ticket list for user review. User can approve as-is, edit, remove, or
-adjust dependencies. **Do not create any tickets until explicitly approved.**
+Present the full ticket list for review. **Do not create any tickets until explicitly approved.**
 
 On approval: create each ticket via `createJiraIssue` (unassigned), link dependents via
-`createIssueLink`, and update the calendar invite descriptions with the Jira links.
+`createIssueLink`, update calendar invite descriptions with Jira links.
 
 ---
 
 ## Phase 5 — Execute Coding Agents
 
-Build a dependency graph. Tickets with no blockers run in parallel. Blocked tickets wait
-for their dependencies to have open PRs. **Prioritize correctness over speed.**
+Build a dependency graph. Independent tickets run in parallel; blocked tickets wait for
+their dependencies to have open PRs. **Prioritize correctness over speed.**
 
 For each ticket, spawn an Agent with `isolation: "worktree"` using the template in
 [AGENT_PROMPT.md](AGENT_PROMPT.md). Pass:
@@ -160,7 +189,7 @@ For each ticket, spawn an Agent with `isolation: "worktree"` using the template 
 ```
 Design to Delivery — Complete
 
-Scoping doc: <google doc link>
+Scoping doc: <google drive link>
 
 Tickets created:
 - [PROJ-123] Title — <jira link>
