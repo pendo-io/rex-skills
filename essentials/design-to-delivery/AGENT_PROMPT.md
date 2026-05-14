@@ -1,7 +1,7 @@
 # Coding Agent Briefing Template
 
-Use this template when spawning a coding agent for a ticket in Step 6.
-Fill in all sections — the more context the agent has, the better the output.
+Use this template when spawning a coding agent for a ticket. Fill in all sections — the
+more context the agent has, the better the output.
 
 ---
 
@@ -30,8 +30,8 @@ Target PR: main (open as draft)
 
 ## Relevant existing code
 {pointers_to_relevant_files_or_patterns}
-Search the repo before writing anything new — prefer extending existing patterns
-over introducing new ones.
+Search the repo before writing anything new — prefer extending existing patterns over
+introducing new ones.
 
 ## Dependencies
 {dependency_context}
@@ -39,11 +39,10 @@ over introducing new ones.
 
 ## Quality requirements
 Before opening the PR:
-1. Run all available checks: tests, lint, build
-   (check package.json / Makefile / README for the right commands)
+1. Run all available checks: tests, lint, build (check package.json / Makefile / README for commands)
 2. Fix any failures — do not open a PR with failing checks
-3. If you cannot fix a failure after reasonable attempts, stop and report
-   the blocker clearly instead of opening a broken PR
+3. If you cannot fix a failure after reasonable attempts, stop and report the blocker
+   clearly instead of opening a broken PR
 
 ## PR format
 - Title: {ticket_title}
@@ -56,13 +55,13 @@ Before opening the PR:
 
 ## Tips for filling the template
 
-**Relevant existing code**: before spawning, grep the repo for the skill name, feature
-area, or key terms from the ticket. Include 2–4 file paths and a one-line note on why
-each is relevant.
+**Pointers to relevant existing code**: before spawning, grep the repo for the skill name,
+feature area, or key terms from the ticket. Include 2–4 file paths and a one-line note on
+why each is relevant.
 
-**Dependency context**: if this ticket depends on others, include what those tickets
-produced — file paths, exported names, interfaces. The agent needs this to integrate
-correctly without re-reading the whole repo.
+**Dependency context**: if this ticket depends on others, include what those tickets built
+and where the code landed (file paths, exported names). The agent needs this to integrate
+correctly.
 
-**Transcript excerpt**: keep it to 2–4 lines — just enough to convey the intent and
-constraints from the design discussion. Longer excerpts dilute signal.
+**Transcript excerpt**: keep it to 2–4 lines — just enough to convey the intent and constraints
+from the design discussion. Longer excerpts dilute signal.
