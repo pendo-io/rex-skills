@@ -34,7 +34,22 @@ Ask the user where the design context lives. Accept any combination:
 | Multiple sources | Combine into a unified context before proceeding |
 | Nothing yet | Run the structured interview (see below) |
 
-**If no context exists — run the structured interview:**
+**If no context exists — run the structured interview using `grill-with-docs`:**
+
+Invoke the `grill-with-docs` skill, passing [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) and
+[CHECKLIST_FIELDS.md](CHECKLIST_FIELDS.md) as the domain documentation to challenge against.
+
+`grill-with-docs` will:
+- Ask questions one at a time, waiting for feedback before continuing
+- Challenge the user when they use terms that conflict with Pendo's domain model
+  (e.g., "Action Driver" vs "Alert", "Intelligence Provider" vs "Copilot")
+- Sharpen fuzzy language into precise canonical terms
+- Cross-reference with the scoping checklist framework and any existing project docs
+- Update `CONTEXT.md` and create ADRs inline as decisions crystallise
+
+The grilling session should cover all 9 sections of the Module Definition Framework
+(see [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md)) across all modules, one at a time.
+Start with: project name, one-sentence description, and number of modules.
 
 Start with:
 > "Let's scope this out properly. I'll walk you through the Module Definition Framework
@@ -43,14 +58,6 @@ Start with:
 >
 > First: **what's the name of this project**, and give me a one-sentence description of
 > what it's supposed to do?"
-
-Then ask: how many **modules** does it have? (A module = a distinct trigger/workflow
-unit. If unsure, assume 1 and adjust.)
-
-For **each module**, work through all 9 sections one at a time using [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md).
-Be conversational — acknowledge what the user says, synthesize and confirm before moving
-on, suggest reasonable defaults where the user is unsure, and mark anything uncertain as
-TBD rather than getting stuck. Complete all 9 sections for one module before starting the next.
 
 **Approval gate:** summarise the gathered context in 3–5 bullets per module and ask the
 user to confirm before proceeding to Phase 2.
